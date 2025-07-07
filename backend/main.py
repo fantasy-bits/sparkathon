@@ -6,7 +6,7 @@ from agno.tools.googlesearch import GoogleSearchTools
 from agno.tools.duckduckgo import DuckDuckGoTools
 import os
 from dotenv import load_dotenv
-
+import json
 load_dotenv()
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -74,9 +74,16 @@ recipe_agent = Agent(
 )
 
 def recipe_agent_call(prompt, markdown=False):
-    return recipe_agent.print_response(prompt,stream=True)
-
-
+    output = recipe_agent.run(prompt)
+    return output.content
+def remove_backtick(text):
+    if text.startswith("```json") and text.endswith("```"):
+        return text[7:-3].strip()
+output = recipe_agent_call("Suggest a recipe for a quick dinner using dosa and sambhar.")
+fin_output = remove_backtick(output)
+final_json = json.loads(fin_output)
+print(final_json)
+print(type(final_json))
 # More example prompts to explore:
 """
 Quick Meals:
