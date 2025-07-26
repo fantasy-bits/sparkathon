@@ -72,18 +72,19 @@ recipe_agent = Agent(
     add_datetime_to_instructions=True,
     show_tool_calls=True,
 )
-
-def recipe_agent_call(prompt, markdown=False):
-    output = recipe_agent.run(prompt)
-    return output.content
 def remove_backtick(text):
     if text.startswith("```json") and text.endswith("```"):
         return text[7:-3].strip()
-output = recipe_agent_call("Suggest a recipe for a quick dinner using dosa and sambhar.")
-fin_output = remove_backtick(output)
-final_json = json.loads(fin_output)
-print(final_json)
-print(type(final_json))
+
+def recipe_agent_call(prompt, markdown=False):
+    output = recipe_agent.run(prompt)
+    fin_output = remove_backtick(output.content)
+    return fin_output
+# output = recipe_agent_call("Suggest a recipe for a quick dinner using dosa and sambhar.")
+# fin_output = remove_backtick(output)
+# final_json = json.loads(fin_output)
+# print(final_json)
+# print(type(final_json))
 # More example prompts to explore:
 """
 Quick Meals:
